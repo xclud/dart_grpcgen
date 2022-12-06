@@ -1,7 +1,8 @@
 import 'dart:io';
 
+import 'package:grpcgen/src/codegen/file_descriptor_proto_extension.dart';
 import 'package:grpcgen/src/grpc/generated/google/protobuf/descriptor.pb.dart';
-import 'package:grpcgen/grpcgen.dart' as grpcgen;
+import 'package:grpcgen/src/grpc/grpc.dart' as grpcgen;
 
 void main(List<String> arguments) async {
   final url = arguments[0];
