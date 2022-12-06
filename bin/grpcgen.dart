@@ -25,7 +25,6 @@ void main(List<String> arguments) async {
 
       final ff = await File('lib/grpc/generated/$name').create(
         recursive: true,
-        exclusive: false,
       );
 
       await ff.writeAsString(f.toCode());
