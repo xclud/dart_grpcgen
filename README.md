@@ -7,7 +7,7 @@
 [![forks](https://img.shields.io/github/forks/xclud/dart_grpcgen)](https://github.com/xclud/dart_grpcgen/network/members)
 [![sdk version](https://badgen.net/pub/sdk-version/grpcgen)](https://pub.dartlang.org/packages/grpcgen)
 
-Code generator for gRPC Client from gRPC Reflection.
+Command-line application for code generation for gRPC clients from gRPC Reflection.
 
 > Note: Requires Dart 2.17 or above.
 
