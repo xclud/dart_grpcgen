@@ -1,6 +1,6 @@
 name: grpcgen
 description: Command-line application for code generation for gRPC clients from gRPC Reflection.
-version: 0.1.0
+version: 0.1.0+1
 repository: https://github.com/xclud/dart_grpcgen
 homepage: https://pwa.ir
 
