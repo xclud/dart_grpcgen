@@ -3,7 +3,9 @@ import 'package:grpcgen/src/codegen/message_descriptor_proto_extension.dart';
 import 'package:grpcgen/src/codegen/service_descriptor_proto_extension.dart';
 import 'package:grpcgen/src/grpc/generated/google/protobuf/descriptor.pb.dart';
 
+/// DartDoc.
 extension FileDescriptorProtoCodeGen on FileDescriptorProto {
+  /// DartDoc.
   String toCode() {
     final lines = <String>[];
     final all = <String, DescriptorProto>{};

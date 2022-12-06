@@ -1,7 +1,9 @@
 import 'package:grpcgen/src/grpc/generated/google/protobuf/descriptor.pb.dart';
 import 'package:recase/recase.dart';
 
+/// DartDoc.
 extension MethodDescriptorProtoCodeGen on MethodDescriptorProto {
+  /// DartDoc.
   String toCode(Map<String, DescriptorProto> messages) {
     final lines = <String>[];
 

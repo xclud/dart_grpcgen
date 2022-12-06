@@ -1,7 +1,9 @@
 import 'package:grpcgen/src/grpc/generated/google/protobuf/descriptor.pb.dart';
 import 'package:recase/recase.dart';
 
+/// DartDoc.
 extension EnumDescriptorProtoCodeGen on EnumDescriptorProto {
+  /// DartDoc.
   String toCode() {
     final lines = <String>[];
 

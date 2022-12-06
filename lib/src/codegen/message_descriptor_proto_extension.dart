@@ -2,7 +2,9 @@ import 'package:grpcgen/src/codegen/field_descriptor_proto_extension.dart';
 import 'package:grpcgen/src/grpc/generated/google/protobuf/descriptor.pb.dart';
 import 'package:recase/recase.dart';
 
+/// DartDoc.
 extension DescriptorProtoCodeGen on DescriptorProto {
+  /// DartDoc.
   String toCode(String package) {
     final lines = <String>[];
 

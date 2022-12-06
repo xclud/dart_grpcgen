@@ -6,16 +6,9 @@ import 'package:grpcgen/src/grpc/generated/reflection.pbgrpc.dart';
 import 'package:grpc/grpc.dart';
 import 'package:grpc/grpc_or_grpcweb.dart';
 
-// import 'generated/google/protobuf/timestamp.pb.dart';
-// import 'generated/google/protobuf/empty.pb.dart';
-
-export 'generated/google/protobuf/timestamp.pb.dart';
-export 'generated/google/protobuf/empty.pb.dart';
-export 'generated/google/protobuf/wrappers.pb.dart';
-
-export 'package:grpc/grpc.dart';
-
 final _channels = <String, ChannelApi>{};
+
+/// DartDoc.
 ChannelApi channel(Uri address) {
   _channels.putIfAbsent(address.toString(),
       () => ChannelApi._(address.host, address.hasPort ? address.port : 443));
@@ -28,6 +21,7 @@ CallOptions? _getCallOptions() {
   return CallOptions();
 }
 
+/// DartDoc.
 class ChannelApi {
   ChannelApi._(String address, int port)
       : _channel = GrpcOrGrpcWebClientChannel.toSingleEndpoint(
@@ -43,6 +37,7 @@ class ChannelApi {
   final GrpcOrGrpcWebClientChannel _channel;
   late final ServerReflectionClient _client;
 
+  /// List Services.
   Future<List<String>> listServices() async {
     final stream = _client.serverReflectionInfo(
       Stream.value(ServerReflectionRequest(listServices: '')),
@@ -57,6 +52,7 @@ class ChannelApi {
         .toList();
   }
 
+  /// Get File Containing Symbol.
   Future<List<FileDescriptorProto>> fileContainingSymbol(String symbol) async {
     final stream = _client.serverReflectionInfo(
       Stream.value(ServerReflectionRequest(fileContainingSymbol: symbol)),
@@ -70,6 +66,7 @@ class ChannelApi {
         .toList();
   }
 
+  /// DartDoc.
   ClientCall<Uint8List, Uint8List> unary(
     String path,
     Uint8List data, {
@@ -86,6 +83,7 @@ class ChannelApi {
     return call;
   }
 
+  /// DartDoc.
   ClientCall<Uint8List, Uint8List> stream(
       String path, Stream<Uint8List> stream) {
     final method = ClientMethod<Uint8List, Uint8List>(

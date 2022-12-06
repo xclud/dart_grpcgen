@@ -2,7 +2,9 @@ import 'package:grpcgen/src/codegen/method_descriptor_proto_extension.dart';
 import 'package:grpcgen/src/grpc/generated/google/protobuf/descriptor.pb.dart';
 import 'package:recase/recase.dart';
 
+/// DartDoc.
 extension ServiceDescriptorProtoCodeGen on ServiceDescriptorProto {
+  /// DartDoc.
   String toCode(Map<String, DescriptorProto> messages) {
     final lines = <String>[];
 
