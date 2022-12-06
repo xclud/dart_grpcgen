@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:dart_style/dart_style.dart';
 
 import 'package:grpcgen/src/codegen/file_descriptor_proto_extension.dart';
-import 'package:grpcgen/src/grpc/generated/google/protobuf/descriptor.pb.dart';
 import 'package:grpcgen/src/grpc/grpc.dart' as grpcgen;
 
 void main(List<String> arguments) async {
@@ -15,25 +14,26 @@ void main(List<String> arguments) async {
   final client = grpcgen.channel(Uri.parse(url));
   final services = await client.listServices();
 
-  final files = <String, FileDescriptorProto>{};
+  try {
+    for (final service in services) {
+      final fileDescriptors = await client.fileContainingSymbol(service);
 
-  for (final service in services) {
-    final fi = await client.fileContainingSymbol(service);
+      for (final fileDescriptor in fileDescriptors) {
+        final name = fileDescriptor.name.replaceAll('.proto', '.dart');
 
-    for (final f in fi) {
-      files[f.name] = f;
-      final name = f.name.replaceAll('.proto', '.dart');
+        final fileHandle = await File('lib/grpc/generated/$name').create(
+          recursive: true,
+        );
 
-      final ff = await File('lib/grpc/generated/$name').create(
-        recursive: true,
-      );
+        final source = fileDescriptor.toCode();
+        final formatted = DartFormatter().format(source);
 
-      final source = f.toCode();
-      final formatted = DartFormatter().format(source);
-
-      await ff.writeAsString(formatted);
+        await fileHandle.writeAsString(formatted);
+      }
     }
+    exit(0);
+  } catch (exp) {
+    print(exp);
+    exit(-1);
   }
-
-  exit(0);
 }
