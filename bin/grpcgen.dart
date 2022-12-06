@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dart_style/dart_style.dart';
 
 import 'package:grpcgen/src/codegen/file_descriptor_proto_extension.dart';
 import 'package:grpcgen/src/grpc/generated/google/protobuf/descriptor.pb.dart';
@@ -27,7 +28,10 @@ void main(List<String> arguments) async {
         recursive: true,
       );
 
-      await ff.writeAsString(f.toCode());
+      final source = f.toCode();
+      final formatted = DartFormatter().format(source);
+
+      await ff.writeAsString(formatted);
     }
   }
 
