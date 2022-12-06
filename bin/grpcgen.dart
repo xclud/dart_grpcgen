@@ -29,6 +29,8 @@ void main(List<String> arguments) async {
         final formatted = DartFormatter().format(source);
 
         await fileHandle.writeAsString(formatted);
+
+        print("Generated '$name'.");
       }
     }
     exit(0);
