@@ -1,0 +1,17 @@
+name: grpcgen
+description: Command-line application for code generation for gRPC clients from gRPC Reflection.
+version: 0.1.0
+repository: https://github.com/xclud/dart_grpcgen
+
+environment:
+  sdk: '>=2.17.0 <3.0.0'
+
+dependencies:
+  fixnum: ^1.0.1
+  protobuf: ^2.1.0
+  grpc: ^3.1.0
+  recase: ^4.1.0
+
+dev_dependencies:
+  lints: ^2.0.0
+  test: ^1.22.0
