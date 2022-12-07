@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:dart_style/dart_style.dart';
 
-import 'package:grpcgen/src/codegen/file_descriptor_proto_extension.dart';
 import 'package:grpcgen/src/grpc/grpc.dart' as grpcgen;
+import 'package:grpcgen/src/codegen/protoc.dart';
+import 'package:grpcgen/src/codegen/src/output_config.dart';
 
 void main(List<String> arguments) async {
   final url = arguments[0];
@@ -15,24 +16,31 @@ void main(List<String> arguments) async {
   final services = await client.listServices();
 
   try {
+    final generators = <FileGenerator>{};
+
     for (final service in services) {
       final fileDescriptors = await client.fileContainingSymbol(service);
 
-      for (final fileDescriptor in fileDescriptors) {
-        final name = fileDescriptor.name.replaceAll('.proto', '.dart');
+      final generator = CodeGenerator(fileDescriptors);
+      generators.addAll(generator.generate());
+    }
 
-        final fileHandle = await File('lib/grpc/generated/$name').create(
+    final config = const DefaultOutputConfiguration();
+
+    for (final gen in generators) {
+      final files = gen.generateFiles(config);
+
+      for (var file in files) {
+        final formatted = DartFormatter().format(file.content);
+        final fileHandle = await File('lib/grpc/generated/${file.file}').create(
           recursive: true,
         );
 
-        final source = fileDescriptor.toCode();
-        final formatted = DartFormatter().format(source);
-
         await fileHandle.writeAsString(formatted);
-
-        print("Generated '$name'.");
+        print("Generated '${file.file}'.");
       }
     }
+
     exit(0);
   } catch (exp) {
     print(exp);
