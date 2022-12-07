@@ -375,13 +375,6 @@ class MessageGenerator extends ProtobufContainer {
 'Will be removed in next major version')''');
       out.println('$classname clone() =>'
           ' $classname()..mergeFromMessage(this);');
-      out.println('''@$coreImportPrefix.Deprecated(
-'Using this can add significant overhead to your binary. '
-'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-'Will be removed in next major version')''');
-      out.println('$classname copyWith(void Function($classname) updates) =>'
-          ' super.copyWith((message) => updates(message as $classname))'
-          ' as $classname;');
 
       out.println('');
       out.println('$protobufImportPrefix.BuilderInfo get info_ => _i;');
@@ -485,12 +478,13 @@ class MessageGenerator extends ProtobufContainer {
     final getterExpr = _getterExpression(fieldTypeString, field.index!,
         defaultExpr, field.isRepeated, field.isMapField);
     out.printlnAnnotated(
-        '$fieldTypeString get ${names!.fieldName} => $getterExpr;', [
-      NamedLocation(
-          name: names.fieldName,
-          fieldPathSegment: memberFieldPath,
-          start: '$fieldTypeString get '.length)
-    ]);
+        '$fieldTypeString get ${names!.fieldName} => \$_has(${field.index!}) ? $getterExpr : null;',
+        [
+          NamedLocation(
+              name: names.fieldName,
+              fieldPathSegment: memberFieldPath,
+              start: '$fieldTypeString get '.length)
+        ]);
 
     if (field.isRepeated) {
       if (field.overridesSetter) {
