@@ -1,49 +1,85 @@
 import 'dart:io';
+import 'package:args/args.dart';
 import 'package:dart_style/dart_style.dart';
+import 'package:path/path.dart' as path;
 
 import 'package:grpcgen/src/grpc/grpc.dart' as grpcgen;
 import 'package:grpcgen/src/codegen/protoc.dart';
 import 'package:grpcgen/src/codegen/src/output_config.dart';
 
 void main(List<String> arguments) async {
-  final url = arguments[0];
-  // final dir = arguments[1];
+  final parser = ArgParser();
 
-  // print(url);
-  // print(dir);
+  parser.addOption(
+    'host',
+    abbr: 'h',
+    mandatory: true,
+    help: 'Url to the web server with gRPC Reflection.',
+    valueHelp: 'https://example.com',
+  );
+  parser.addOption(
+    'output',
+    abbr: 'o',
+    mandatory: false,
+    help: 'Output directory to put the generated files.',
+    valueHelp: 'lib/grpc/generated',
+    defaultsTo: 'lib/grpc/generated/',
+  );
 
-  final client = grpcgen.channel(Uri.parse(url));
-  final services = await client.listServices();
+  final results = parser.parse(arguments);
 
   try {
-    final generators = <FileGenerator>{};
+    final host = results['host'] as String;
+    final output = (results['output'] as String?) ?? 'lib/grpc/generated/';
 
-    for (final service in services) {
-      final fileDescriptors = await client.fileContainingSymbol(service);
+    final url = Uri.tryParse(host);
 
-      final generator = CodeGenerator(fileDescriptors);
-      generators.addAll(generator.generate());
+    if (url == null) {
+      print(parser.usage);
+      print('Invalid host url.');
+      exit(-1);
     }
-
-    final config = const DefaultOutputConfiguration();
-
-    for (final gen in generators) {
-      final files = gen.generateFiles(config);
-
-      for (var file in files) {
-        final formatted = DartFormatter().format(file.content);
-        final fileHandle = await File('lib/grpc/generated/${file.file}').create(
-          recursive: true,
-        );
-
-        await fileHandle.writeAsString(formatted);
-        print("Generated '${file.file}'.");
-      }
+    try {
+      await generate(url, output);
+      exit(0);
+    } catch (exp) {
+      print(exp);
+      exit(-1);
     }
-
-    exit(0);
   } catch (exp) {
-    print(exp);
-    exit(-1);
+    print(parser.usage);
   }
+}
+
+Future<void> generate(Uri url, String output) async {
+  final client = grpcgen.channel(url);
+  final services = await client.listServices();
+
+  final generators = <FileGenerator>{};
+
+  for (final service in services) {
+    final fileDescriptors = await client.fileContainingSymbol(service);
+
+    final generator = CodeGenerator(fileDescriptors);
+    generators.addAll(generator.generate());
+  }
+
+  final config = const DefaultOutputConfiguration();
+
+  for (final gen in generators) {
+    final files = gen.generateFiles(config);
+
+    for (var file in files) {
+      final filePath = path.join(output, file.file);
+      final formatted = DartFormatter().format(file.content);
+      final fileHandle = await File(filePath).create(
+        recursive: true,
+      );
+
+      await fileHandle.writeAsString(formatted);
+      print("Generated '${file.file}'.");
+    }
+  }
+
+  print("Saved to '$output'.");
 }
