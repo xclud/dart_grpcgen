@@ -297,15 +297,10 @@ class MessageGenerator extends ProtobufContainer {
       mixinClause = ' with ${mixinNames.join(", ")}';
     }
 
-    final omitMessageNames = ConditionalConstDefinition('omit_message_names');
-    out.addSuffix(
-        omitMessageNames.constFieldName, omitMessageNames.constDefinition);
+    final packageName = 'const $protobufImportPrefix.PackageName'
+        '(${quoted(package)})';
 
-    final conditionalPackageName = 'const $protobufImportPrefix.PackageName'
-        '(${omitMessageNames.createTernary(package)})';
-
-    var packageClause =
-        package == '' ? '' : ', package: $conditionalPackageName';
+    var packageClause = package == '' ? '' : ', package: $packageName';
     var proto3JsonClause = (mixin?.hasProto3JsonHelpers ?? false)
         ? ', toProto3Json: $mixinImportPrefix.${mixin!.name}.toProto3JsonHelper, '
             'fromProto3Json: $mixinImportPrefix.${mixin!.name}.fromProto3JsonHelper'
@@ -330,13 +325,9 @@ class MessageGenerator extends ProtobufContainer {
         });
       }
 
-      final omitMessageNames = ConditionalConstDefinition('omit_message_names');
-      out.addSuffix(
-          omitMessageNames.constFieldName, omitMessageNames.constDefinition);
-
       out.addBlock(
           'static final $protobufImportPrefix.BuilderInfo _i = '
-              '$protobufImportPrefix.BuilderInfo(${omitMessageNames.createTernary(messageName)}'
+              '$protobufImportPrefix.BuilderInfo(${quoted(messageName)}'
               '$packageClause'
               ', createEmptyInstance: create'
               '$proto3JsonClause)',
@@ -483,6 +474,8 @@ class MessageGenerator extends ProtobufContainer {
   void generateFieldAccessorsMutators(
       ProtobufField field, IndentingWriter out, List<int> memberFieldPath) {
     var fieldTypeString = field.getDartType();
+    final nullable = field.baseType.nullable;
+
     var defaultExpr = field.getDefaultExpr();
     var names = field.memberNames;
 
@@ -514,6 +507,13 @@ class MessageGenerator extends ProtobufContainer {
       }
     } else {
       var fastSetter = field.baseType.setter;
+      final setterStatement = '$fastSetter(${field.index}, v)';
+      final setterBody = nullable
+          ? 'if(v == null) {clearField(${field.number}); return;}'
+              ''
+              '$setterStatement'
+          : setterStatement;
+
       _emitDeprecatedIf(field.isDeprecated, out);
       _emitOverrideIf(field.overridesSetter, out);
       _emitIndexAnnotation(field.number, out);
@@ -521,7 +521,7 @@ class MessageGenerator extends ProtobufContainer {
         out.printlnAnnotated(
             'set ${names.fieldName}'
             '($fieldTypeString v) { '
-            '$fastSetter(${field.index}, v);'
+            '$setterBody;'
             ' }',
             [
               NamedLocation(
@@ -530,10 +530,17 @@ class MessageGenerator extends ProtobufContainer {
                   start: 'set '.length)
             ]);
       } else {
+        final setterStatement = 'setField(${field.index}, v)';
+        final setterBody = nullable
+            ? 'if(v == null) {clearField(${field.number}); return;}'
+                ''
+                '$setterStatement'
+            : setterStatement;
+
         out.printlnAnnotated(
             'set ${names.fieldName}'
             '($fieldTypeString v) { '
-            'setField(${field.number}, v);'
+            '$setterBody;'
             ' }',
             [
               NamedLocation(

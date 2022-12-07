@@ -144,11 +144,12 @@ class ProtobufField {
     if (isMapField) {
       final d = baseType.generator as MessageGenerator;
       var keyType = d._fieldList[0].baseType.getDartType(parent.fileGen!);
-      var valueType = d._fieldList[1].baseType.getDartType(parent.fileGen!);
+      var valueType =
+          d._fieldList[1].baseType.getNullableDartType(parent.fileGen!);
       return '$coreImportPrefix.Map<$keyType, $valueType>';
     }
     if (isRepeated) return baseType.getRepeatedDartType(parent.fileGen!);
-    return baseType.getDartType(parent.fileGen!);
+    return baseType.getNullableDartType(parent.fileGen!);
   }
 
   /// Returns the tag number of the underlying proto field.
@@ -183,10 +184,7 @@ class ProtobufField {
   void generateBuilderInfoCall(IndentingWriter out, String package) {
     assert(descriptor.hasJsonName());
 
-    final omitFieldNames = ConditionalConstDefinition('omit_field_names');
-    out.addSuffix(
-        omitFieldNames.constFieldName, omitFieldNames.constDefinition);
-    final quotedName = omitFieldNames.createTernary(descriptor.jsonName);
+    final quotedName = quoted(descriptor.jsonName);
 
     var type = baseType.getDartType(parent.fileGen!);
 

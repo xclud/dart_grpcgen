@@ -93,20 +93,13 @@ class ExtensionGenerator {
     var type = _field.baseType;
     var dartType = type.getDartType(fileGen!);
 
-    final omitFieldNames = ConditionalConstDefinition('omit_field_names');
-    out.addSuffix(
-        omitFieldNames.constFieldName, omitFieldNames.constDefinition);
-    final conditionalName = omitFieldNames.createTernary(_extensionName);
-    final omitMessageNames = ConditionalConstDefinition('omit_message_names');
-    out.addSuffix(
-        omitMessageNames.constFieldName, omitMessageNames.constDefinition);
-    final conditionalExtendedName =
-        omitMessageNames.createTernary(_extendedFullName);
+    final extensionName = quoted(_extensionName);
+    final extensionFullName = quoted(_extendedFullName);
 
     String invocation;
     var positionals = <String>[];
-    positionals.add(conditionalExtendedName);
-    positionals.add(conditionalName);
+    positionals.add(extensionFullName);
+    positionals.add(extensionName);
     positionals.add('${_field.number}');
     positionals.add(_field.typeConstant);
 

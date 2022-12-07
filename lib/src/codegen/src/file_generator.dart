@@ -13,7 +13,7 @@ const String _convertImportUrl = 'dart:convert';
 
 const String _coreImportUrl = 'dart:core';
 const String _fixnumImportPrefix = r'$fixnum';
-const String _grpcImportUrl = 'package:grpc/service_api.dart';
+const String _grpcImportUrl = 'package:grpc/grpc.dart';
 const String _protobufImportUrl = 'package:protobuf/protobuf.dart';
 
 const String _typedDataImportPrefix = r'$typed_data';
@@ -251,10 +251,6 @@ class FileGenerator extends ProtobufContainer {
       if (options.useGrpc) {
         if (grpcGenerators.isNotEmpty) {
           generateGrpcFile(importWriter, config);
-
-          importWriter.addImport(_asyncImportUrl, prefix: asyncImportPrefix);
-          importWriter.addImport(_coreImportUrl, prefix: coreImportPrefix);
-          importWriter.addImport(_grpcImportUrl, prefix: grpcImportPrefix);
         }
       } else {
         //files.add(makeFile('.pbserver.dart', generateServerFile(config)));
@@ -273,11 +269,7 @@ class FileGenerator extends ProtobufContainer {
         makeFile('.dart.meta', out.sourceLocationInfo.writeToJson().toString()),
       ]);
     }
-    if (options.useGrpc) {
-      if (grpcGenerators.isNotEmpty) {
-        //
-      }
-    } else {
+    if (!options.useGrpc) {
       files.add(makeFile('.pbserver.dart', generateServerFile(config)));
     }
     return files;
@@ -322,8 +314,13 @@ class FileGenerator extends ProtobufContainer {
       });
     }
 
-    if (enumGenerators.isNotEmpty || messageGenerators.isNotEmpty) {
+    final hasNestedEnums =
+        messageGenerators.any((element) => element.enumCount > 0);
+
+    if (enumGenerators.isNotEmpty || hasNestedEnums) {
+      out.println('');
       out.println('// -------- Enums --------');
+      out.println('');
 
       // Generate Enums.
       for (var e in enumGenerators) {
@@ -341,7 +338,9 @@ class FileGenerator extends ProtobufContainer {
     }
 
     if (grpcGenerators.isNotEmpty) {
+      out.println('');
       out.println('// -------- Clients --------');
+      out.println('');
       for (var generator in grpcGenerators) {
         generator.generate(out);
       }
@@ -505,9 +504,6 @@ class FileGenerator extends ProtobufContainer {
     for (var target in imports) {
       _addImport(importWriter, config, target, '.dart');
     }
-
-    var url = config.resolveImport(protoFileUri, protoFileUri, '.dart');
-    importWriter.addExport(url.toString());
   }
 
   void writeBinaryDescriptor(IndentingWriter out, String identifierName,
@@ -625,8 +621,6 @@ class FileGenerator extends ProtobufContainer {
 //
 //  Generated code. Do not modify.
 //  source: ${descriptor.name}
-//
-// @dart = 2.12
 ''');
     ignorelines.forEach(out.println);
     out.println('');
@@ -654,34 +648,6 @@ class FileGenerator extends ProtobufContainer {
       Uri target, String ext) {
     var url = config.resolveImport(target, protoFileUri, ext);
     importWriter.addExport(url.toString());
-  }
-}
-
-class ConditionalConstDefinition {
-  ConditionalConstDefinition(this.envName) {
-    _fieldName = _convertToCamelCase(envName);
-  }
-  final String envName;
-  late String _fieldName;
-
-  String get constFieldName => _fieldName;
-
-  String get constDefinition {
-    return 'const $constFieldName = '
-        "$coreImportPrefix.bool.fromEnvironment(${quoted('protobuf.$envName')});";
-  }
-
-  String createTernary(String ifFalse) {
-    return "$constFieldName ? '' : ${quoted(ifFalse)}";
-  }
-
-  // Convert foo_bar_baz to _fooBarBaz.
-  String _convertToCamelCase(String lowerUnderscoreCase) {
-    var parts = lowerUnderscoreCase.split('_');
-    var rest = parts.skip(1).map((item) {
-      return item.substring(0, 1).toUpperCase() + item.substring(1);
-    }).join();
-    return '_${parts.first}$rest';
   }
 }
 
