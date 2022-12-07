@@ -477,14 +477,18 @@ class MessageGenerator extends ProtobufContainer {
     _emitIndexAnnotation(field.number, out);
     final getterExpr = _getterExpression(fieldTypeString, field.index!,
         defaultExpr, field.isRepeated, field.isMapField);
+
+    final nullableGetterExpr = '\$_has(${field.index!}) ? $getterExpr : null';
+
+    final getterBody = nullable ? nullableGetterExpr : getterExpr;
+
     out.printlnAnnotated(
-        '$fieldTypeString get ${names!.fieldName} => \$_has(${field.index!}) ? $getterExpr : null;',
-        [
-          NamedLocation(
-              name: names.fieldName,
-              fieldPathSegment: memberFieldPath,
-              start: '$fieldTypeString get '.length)
-        ]);
+        '$fieldTypeString get ${names!.fieldName} => $getterBody;', [
+      NamedLocation(
+          name: names.fieldName,
+          fieldPathSegment: memberFieldPath,
+          start: '$fieldTypeString get '.length)
+    ]);
 
     if (field.isRepeated) {
       if (field.overridesSetter) {
