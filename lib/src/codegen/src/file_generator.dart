@@ -13,7 +13,7 @@ const String _convertImportUrl = 'dart:convert';
 
 const String _coreImportUrl = 'dart:core';
 const String _fixnumImportPrefix = r'$fixnum';
-const String _grpcImportUrl = 'package:grpc/grpc.dart';
+const String _grpcImportUrl = 'package:grpc/service_api.dart';
 const String _protobufImportUrl = 'package:protobuf/protobuf.dart';
 
 const String _typedDataImportPrefix = r'$typed_data';
