@@ -26,9 +26,8 @@ void main(List<String> arguments) async {
     defaultsTo: 'lib/grpc/generated/',
   );
 
-  final results = parser.parse(arguments);
-
   try {
+    final results = parser.parse(arguments);
     final host = results['host'] as String;
     final output = (results['output'] as String?) ?? 'lib/grpc/generated/';
 
