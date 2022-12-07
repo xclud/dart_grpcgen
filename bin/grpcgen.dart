@@ -33,11 +33,10 @@ void main(List<String> arguments) async {
 
     final url = Uri.tryParse(host);
 
-    if (url == null) {
-      print(parser.usage);
-      print('Invalid host url.');
-      exit(-1);
+    if (url == null || url.host.isEmpty) {
+      throw FormatException('Invalid host url.');
     }
+
     try {
       await generate(url, output);
       exit(0);
@@ -45,7 +44,12 @@ void main(List<String> arguments) async {
       print(exp);
       exit(-1);
     }
-  } catch (exp) {
+  } on Exception catch (exp) {
+    if (exp is FormatException) {
+      print(exp.message);
+      print('');
+    }
+    print('Usage:');
     print(parser.usage);
   }
 }
