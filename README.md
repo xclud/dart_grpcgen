@@ -13,32 +13,41 @@ Command-line application for code generation for gRPC clients from gRPC Reflecti
 
 ## Get Started
 
-### Install as a global tool
-
-To install grpcgen as a global tool, run:
+Install the latest version of the tool globally, exposing the CLI on the command line:
 
 ```bash
 dart pub global activate grpcgen
 ```
 
-### Install as a project dependency
+Usage:
+
+```bash
+grpcgen -h https://example.com
+```
+
+To install the tool as a dev dependency in your current project:
 
 Add `grpcgen` package in your `dev_dependencies`:
 
 ```yaml
 dev_dependencies:
+# dart run grpcgen -h https://example.com
   grpcgen: any
 ```
 
 > Note: This package should not be added to `dependencies`.
 
-In order to generate gRPC Client code from server reflection, run:
+Usage:
 
 ```bash
-dart run grpcgen https://example-domain.com
+dart run grpcgen -h https://example.com
 ```
 
-## Output
+## Usage
 
-If everything goes well in the previews section, the outputs will be generated.
-The generated files can be found in `lib/grpc/generated/`.
+-h, --host=<https://example.com> (mandatory)    Url to the web server with gRPC Reflection.
+-o, --output=<lib/grpc/generated>               Output directory to put the generated files.
+                                                (defaults to "lib/grpc/generated/")
+-s, --schema=\<v1\>                               The schema to use, either v1alpha or v1.
+                                                (defaults to "v1alpha")
+-r, --[no-]reflection                           If set, reflection code is also generated.
