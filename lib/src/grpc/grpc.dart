@@ -2,18 +2,24 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:grpcgen/src/generated/descriptor.pb.dart';
-import 'package:grpcgen/src/grpc/generated/reflection.pbgrpc.dart';
+import 'package:grpcgen/src/grpc/generated/reflection_v1.dart' as v1;
 import 'package:grpc/grpc.dart';
 import 'package:grpc/grpc_or_grpcweb.dart';
 
 final _channels = <String, ChannelApi>{};
 
 /// DartDoc.
-ChannelApi channel(Uri address) {
-  _channels.putIfAbsent(address.toString(),
-      () => ChannelApi._(address.host, address.hasPort ? address.port : 443));
+ChannelApi channel(Uri address, String version) {
+  final key = '$version::$address';
 
-  return _channels[address.toString()]!;
+  return _channels.putIfAbsent(
+    key,
+    () => ChannelApi._(
+      address.host,
+      address.hasPort ? address.port : 443,
+      version,
+    ),
+  );
 }
 
 CallOptions? _getCallOptions() {
@@ -23,28 +29,34 @@ CallOptions? _getCallOptions() {
 
 /// DartDoc.
 class ChannelApi {
-  ChannelApi._(String address, int port)
+  ChannelApi._(String address, int port, this.version)
       : _channel = GrpcOrGrpcWebClientChannel.toSingleEndpoint(
           host: address,
           port: port,
           transportSecure: true,
         ) {
-    _client = ServerReflectionClient(
+    _client = v1.ServerReflectionClient(
       _channel,
+      version,
     );
   }
 
   final GrpcOrGrpcWebClientChannel _channel;
-  late final ServerReflectionClient _client;
+  late final v1.ServerReflectionClient _client;
+  final String version;
 
   /// List Services.
-  Future<List<String>> listServices() async {
+  Future<List<String>> listServices(bool includeReflection) async {
     final stream = _client.serverReflectionInfo(
-      Stream.value(ServerReflectionRequest(listServices: '')),
+      Stream.value(v1.ServerReflectionRequest()..listServices = ''),
       options: _getCallOptions(),
     );
 
     var single = await stream.single;
+
+    if (includeReflection) {
+      return single.listServicesResponse.service.map((e) => e.name).toList();
+    }
 
     return single.listServicesResponse.service
         .where((e) => !e.name.startsWith('grpc.reflection'))
@@ -55,7 +67,7 @@ class ChannelApi {
   /// Get File Containing Symbol.
   Future<List<FileDescriptorProto>> fileContainingSymbol(String symbol) async {
     final stream = _client.serverReflectionInfo(
-      Stream.value(ServerReflectionRequest(fileContainingSymbol: symbol)),
+      Stream.value(v1.ServerReflectionRequest()..fileContainingSymbol = symbol),
       options: _getCallOptions(),
     );
 

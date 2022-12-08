@@ -17,6 +17,7 @@ void main(List<String> arguments) async {
     help: 'Url to the web server with gRPC Reflection.',
     valueHelp: 'https://example.com',
   );
+
   parser.addOption(
     'output',
     abbr: 'o',
@@ -26,10 +27,27 @@ void main(List<String> arguments) async {
     defaultsTo: 'lib/grpc/generated/',
   );
 
+  parser.addOption(
+    'schema',
+    abbr: 's',
+    mandatory: false,
+    help: 'The schema to use, either v1alpha or v1.',
+    valueHelp: 'v1',
+    defaultsTo: 'v1alpha',
+  );
+
+  parser.addFlag(
+    'reflection',
+    abbr: 'r',
+    help: 'If set, reflection code is also generated.',
+  );
+
   try {
     final results = parser.parse(arguments);
     final host = results['host'] as String;
     final output = (results['output'] as String?) ?? 'lib/grpc/generated/';
+    final schema = (results['schema'] as String?) ?? 'v1alpha';
+    final reflection = (results['reflection'] as bool?) ?? false;
 
     final url = Uri.tryParse(host);
 
@@ -37,8 +55,12 @@ void main(List<String> arguments) async {
       throw FormatException('Invalid host url.');
     }
 
+    if (schema != 'v1alpha' && schema != 'v1') {
+      throw FormatException('Invalid schema. Use either v1alpha or v1.');
+    }
+
     try {
-      await generate(url, output);
+      await generate(url, output, schema, reflection);
       exit(0);
     } catch (exp) {
       print(exp);
@@ -54,9 +76,14 @@ void main(List<String> arguments) async {
   }
 }
 
-Future<void> generate(Uri url, String output) async {
-  final client = grpcgen.channel(url);
-  final services = await client.listServices();
+Future<void> generate(
+  Uri url,
+  String output,
+  String schema,
+  bool includeReflection,
+) async {
+  final client = grpcgen.channel(url, schema);
+  final services = await client.listServices(includeReflection);
 
   final generators = <FileGenerator>{};
 

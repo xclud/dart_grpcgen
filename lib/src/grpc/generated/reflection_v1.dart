@@ -1,13 +1,20 @@
-///
-//  Generated code. Do not modify.
-//  source: reflection.proto
 //
-// @dart = 2.12
-// ignore_for_file: annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
+//  Generated code. Do not modify.
+//  source: grpc/reflection/v1alpha/reflection.proto
 
+// ignore_for_file: annotate_overrides, camel_case_types
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: return_of_invalid_type, unnecessary_import, unnecessary_this
+// ignore_for_file: unused_import
+
+import 'dart:async' as $async;
 import 'dart:core' as $core;
 
+import 'package:grpc/service_api.dart' as $grpc;
 import 'package:protobuf/protobuf.dart' as $pb;
+
+import 'reflection_v1.dart' as $7;
 
 enum ServerReflectionRequest_MessageRequest {
   fileByFilename,
@@ -28,98 +35,37 @@ class ServerReflectionRequest extends $pb.GeneratedMessage {
     7: ServerReflectionRequest_MessageRequest.listServices,
     0: ServerReflectionRequest_MessageRequest.notSet
   };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'ServerReflectionRequest',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'grpc.reflection.v1alpha'),
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('ServerReflectionRequest',
+      package: const $pb.PackageName('grpc.reflection.v1alpha'),
       createEmptyInstance: create)
     ..oo(0, [3, 4, 5, 6, 7])
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'host')
-    ..aOS(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'fileByFilename')
-    ..aOS(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'fileContainingSymbol')
-    ..aOM<ExtensionRequest>(
-        5,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'fileContainingExtension',
+    ..aOS(1, '', protoName: 'host')
+    ..aOS(3, '', protoName: 'file_by_filename')
+    ..aOS(4, '', protoName: 'file_containing_symbol')
+    ..aOM<ExtensionRequest>(5, '',
+        protoName: 'file_containing_extension',
         subBuilder: ExtensionRequest.create)
-    ..aOS(
-        6,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'allExtensionNumbersOfType')
-    ..aOS(
-        7,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'listServices')
+    ..aOS(6, '', protoName: 'all_extension_numbers_of_type')
+    ..aOS(7, '', protoName: 'list_services')
     ..hasRequiredFields = false;
 
   ServerReflectionRequest._() : super();
-  factory ServerReflectionRequest({
-    $core.String? host,
-    $core.String? fileByFilename,
-    $core.String? fileContainingSymbol,
-    ExtensionRequest? fileContainingExtension,
-    $core.String? allExtensionNumbersOfType,
-    $core.String? listServices,
-  }) {
-    final _result = create();
-    if (host != null) {
-      _result.host = host;
-    }
-    if (fileByFilename != null) {
-      _result.fileByFilename = fileByFilename;
-    }
-    if (fileContainingSymbol != null) {
-      _result.fileContainingSymbol = fileContainingSymbol;
-    }
-    if (fileContainingExtension != null) {
-      _result.fileContainingExtension = fileContainingExtension;
-    }
-    if (allExtensionNumbersOfType != null) {
-      _result.allExtensionNumbersOfType = allExtensionNumbersOfType;
-    }
-    if (listServices != null) {
-      _result.listServices = listServices;
-    }
-    return _result;
-  }
+  factory ServerReflectionRequest() => create();
   factory ServerReflectionRequest.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory ServerReflectionRequest.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
   ServerReflectionRequest clone() =>
       ServerReflectionRequest()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  ServerReflectionRequest copyWith(
-          void Function(ServerReflectionRequest) updates) =>
-      super.copyWith((message) => updates(message as ServerReflectionRequest))
-          as ServerReflectionRequest; // ignore: deprecated_member_use
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static ServerReflectionRequest create() => ServerReflectionRequest._();
   ServerReflectionRequest createEmptyInstance() => create();
@@ -174,7 +120,7 @@ class ServerReflectionRequest extends $pb.GeneratedMessage {
   ExtensionRequest get fileContainingExtension => $_getN(3);
   @$pb.TagNumber(5)
   set fileContainingExtension(ExtensionRequest v) {
-    setField(5, v);
+    setField(3, v);
   }
 
   @$pb.TagNumber(5)
@@ -210,59 +156,29 @@ class ServerReflectionRequest extends $pb.GeneratedMessage {
 }
 
 class ExtensionRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'ExtensionRequest',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'grpc.reflection.v1alpha'),
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('ExtensionRequest',
+      package: const $pb.PackageName('grpc.reflection.v1alpha'),
       createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'containingType')
-    ..a<$core.int>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'extensionNumber',
-        $pb.PbFieldType.O3)
+    ..aOS(1, '', protoName: 'containing_type')
+    ..a<$core.int>(2, '', $pb.PbFieldType.O3, protoName: 'extension_number')
     ..hasRequiredFields = false;
 
   ExtensionRequest._() : super();
-  factory ExtensionRequest({
-    $core.String? containingType,
-    $core.int? extensionNumber,
-  }) {
-    final _result = create();
-    if (containingType != null) {
-      _result.containingType = containingType;
-    }
-    if (extensionNumber != null) {
-      _result.extensionNumber = extensionNumber;
-    }
-    return _result;
-  }
+  factory ExtensionRequest() => create();
   factory ExtensionRequest.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory ExtensionRequest.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
   ExtensionRequest clone() => ExtensionRequest()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  ExtensionRequest copyWith(void Function(ExtensionRequest) updates) =>
-      super.copyWith((message) => updates(message as ExtensionRequest))
-          as ExtensionRequest; // ignore: deprecated_member_use
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static ExtensionRequest create() => ExtensionRequest._();
   ExtensionRequest createEmptyInstance() => create();
@@ -315,102 +231,44 @@ class ServerReflectionResponse extends $pb.GeneratedMessage {
     7: ServerReflectionResponse_MessageResponse.errorResponse,
     0: ServerReflectionResponse_MessageResponse.notSet
   };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'ServerReflectionResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'grpc.reflection.v1alpha'),
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('ServerReflectionResponse',
+      package: const $pb.PackageName('grpc.reflection.v1alpha'),
       createEmptyInstance: create)
     ..oo(0, [4, 5, 6, 7])
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'validHost')
-    ..aOM<ServerReflectionRequest>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'originalRequest',
+    ..aOS(1, '', protoName: 'valid_host')
+    ..aOM<ServerReflectionRequest>(2, '',
+        protoName: 'original_request',
         subBuilder: ServerReflectionRequest.create)
-    ..aOM<FileDescriptorResponse>(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'fileDescriptorResponse',
+    ..aOM<FileDescriptorResponse>(4, '',
+        protoName: 'file_descriptor_response',
         subBuilder: FileDescriptorResponse.create)
-    ..aOM<ExtensionNumberResponse>(
-        5,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'allExtensionNumbersResponse',
+    ..aOM<ExtensionNumberResponse>(5, '',
+        protoName: 'all_extension_numbers_response',
         subBuilder: ExtensionNumberResponse.create)
-    ..aOM<ListServiceResponse>(
-        6,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'listServicesResponse',
+    ..aOM<ListServiceResponse>(6, '',
+        protoName: 'list_services_response',
         subBuilder: ListServiceResponse.create)
-    ..aOM<ErrorResponse>(
-        7,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'errorResponse',
-        subBuilder: ErrorResponse.create)
+    ..aOM<ErrorResponse>(7, '',
+        protoName: 'error_response', subBuilder: ErrorResponse.create)
     ..hasRequiredFields = false;
 
   ServerReflectionResponse._() : super();
-  factory ServerReflectionResponse({
-    $core.String? validHost,
-    ServerReflectionRequest? originalRequest,
-    FileDescriptorResponse? fileDescriptorResponse,
-    ExtensionNumberResponse? allExtensionNumbersResponse,
-    ListServiceResponse? listServicesResponse,
-    ErrorResponse? errorResponse,
-  }) {
-    final _result = create();
-    if (validHost != null) {
-      _result.validHost = validHost;
-    }
-    if (originalRequest != null) {
-      _result.originalRequest = originalRequest;
-    }
-    if (fileDescriptorResponse != null) {
-      _result.fileDescriptorResponse = fileDescriptorResponse;
-    }
-    if (allExtensionNumbersResponse != null) {
-      _result.allExtensionNumbersResponse = allExtensionNumbersResponse;
-    }
-    if (listServicesResponse != null) {
-      _result.listServicesResponse = listServicesResponse;
-    }
-    if (errorResponse != null) {
-      _result.errorResponse = errorResponse;
-    }
-    return _result;
-  }
+  factory ServerReflectionResponse() => create();
   factory ServerReflectionResponse.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory ServerReflectionResponse.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
   ServerReflectionResponse clone() =>
       ServerReflectionResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  ServerReflectionResponse copyWith(
-          void Function(ServerReflectionResponse) updates) =>
-      super.copyWith((message) => updates(message as ServerReflectionResponse))
-          as ServerReflectionResponse; // ignore: deprecated_member_use
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static ServerReflectionResponse create() => ServerReflectionResponse._();
   ServerReflectionResponse createEmptyInstance() => create();
@@ -441,7 +299,7 @@ class ServerReflectionResponse extends $pb.GeneratedMessage {
   ServerReflectionRequest get originalRequest => $_getN(1);
   @$pb.TagNumber(2)
   set originalRequest(ServerReflectionRequest v) {
-    setField(2, v);
+    setField(1, v);
   }
 
   @$pb.TagNumber(2)
@@ -455,7 +313,7 @@ class ServerReflectionResponse extends $pb.GeneratedMessage {
   FileDescriptorResponse get fileDescriptorResponse => $_getN(2);
   @$pb.TagNumber(4)
   set fileDescriptorResponse(FileDescriptorResponse v) {
-    setField(4, v);
+    setField(2, v);
   }
 
   @$pb.TagNumber(4)
@@ -469,7 +327,7 @@ class ServerReflectionResponse extends $pb.GeneratedMessage {
   ExtensionNumberResponse get allExtensionNumbersResponse => $_getN(3);
   @$pb.TagNumber(5)
   set allExtensionNumbersResponse(ExtensionNumberResponse v) {
-    setField(5, v);
+    setField(3, v);
   }
 
   @$pb.TagNumber(5)
@@ -483,7 +341,7 @@ class ServerReflectionResponse extends $pb.GeneratedMessage {
   ListServiceResponse get listServicesResponse => $_getN(4);
   @$pb.TagNumber(6)
   set listServicesResponse(ListServiceResponse v) {
-    setField(6, v);
+    setField(4, v);
   }
 
   @$pb.TagNumber(6)
@@ -497,7 +355,7 @@ class ServerReflectionResponse extends $pb.GeneratedMessage {
   ErrorResponse get errorResponse => $_getN(5);
   @$pb.TagNumber(7)
   set errorResponse(ErrorResponse v) {
-    setField(7, v);
+    setField(5, v);
   }
 
   @$pb.TagNumber(7)
@@ -509,52 +367,30 @@ class ServerReflectionResponse extends $pb.GeneratedMessage {
 }
 
 class FileDescriptorResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'FileDescriptorResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'grpc.reflection.v1alpha'),
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('FileDescriptorResponse',
+      package: const $pb.PackageName('grpc.reflection.v1alpha'),
       createEmptyInstance: create)
-    ..p<$core.List<$core.int>>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'fileDescriptorProto',
-        $pb.PbFieldType.PY)
+    ..p<$core.List<$core.int>>(1, '', $pb.PbFieldType.PY,
+        protoName: 'file_descriptor_proto')
     ..hasRequiredFields = false;
 
   FileDescriptorResponse._() : super();
-  factory FileDescriptorResponse({
-    $core.Iterable<$core.List<$core.int>>? fileDescriptorProto,
-  }) {
-    final _result = create();
-    if (fileDescriptorProto != null) {
-      _result.fileDescriptorProto.addAll(fileDescriptorProto);
-    }
-    return _result;
-  }
+  factory FileDescriptorResponse() => create();
   factory FileDescriptorResponse.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory FileDescriptorResponse.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
   FileDescriptorResponse clone() =>
       FileDescriptorResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  FileDescriptorResponse copyWith(
-          void Function(FileDescriptorResponse) updates) =>
-      super.copyWith((message) => updates(message as FileDescriptorResponse))
-          as FileDescriptorResponse; // ignore: deprecated_member_use
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static FileDescriptorResponse create() => FileDescriptorResponse._();
   FileDescriptorResponse createEmptyInstance() => create();
@@ -570,61 +406,30 @@ class FileDescriptorResponse extends $pb.GeneratedMessage {
 }
 
 class ExtensionNumberResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'ExtensionNumberResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'grpc.reflection.v1alpha'),
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('ExtensionNumberResponse',
+      package: const $pb.PackageName('grpc.reflection.v1alpha'),
       createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'baseTypeName')
-    ..p<$core.int>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'extensionNumber',
-        $pb.PbFieldType.K3)
+    ..aOS(1, '', protoName: 'base_type_name')
+    ..p<$core.int>(2, '', $pb.PbFieldType.K3, protoName: 'extension_number')
     ..hasRequiredFields = false;
 
   ExtensionNumberResponse._() : super();
-  factory ExtensionNumberResponse({
-    $core.String? baseTypeName,
-    $core.Iterable<$core.int>? extensionNumber,
-  }) {
-    final _result = create();
-    if (baseTypeName != null) {
-      _result.baseTypeName = baseTypeName;
-    }
-    if (extensionNumber != null) {
-      _result.extensionNumber.addAll(extensionNumber);
-    }
-    return _result;
-  }
+  factory ExtensionNumberResponse() => create();
   factory ExtensionNumberResponse.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory ExtensionNumberResponse.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
   ExtensionNumberResponse clone() =>
       ExtensionNumberResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  ExtensionNumberResponse copyWith(
-          void Function(ExtensionNumberResponse) updates) =>
-      super.copyWith((message) => updates(message as ExtensionNumberResponse))
-          as ExtensionNumberResponse; // ignore: deprecated_member_use
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static ExtensionNumberResponse create() => ExtensionNumberResponse._();
   ExtensionNumberResponse createEmptyInstance() => create();
@@ -652,51 +457,29 @@ class ExtensionNumberResponse extends $pb.GeneratedMessage {
 }
 
 class ListServiceResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'ListServiceResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'grpc.reflection.v1alpha'),
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('ListServiceResponse',
+      package: const $pb.PackageName('grpc.reflection.v1alpha'),
       createEmptyInstance: create)
-    ..pc<ServiceResponse>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'service',
-        $pb.PbFieldType.PM,
-        subBuilder: ServiceResponse.create)
+    ..pc<ServiceResponse>(1, '', $pb.PbFieldType.PM,
+        protoName: 'service', subBuilder: ServiceResponse.create)
     ..hasRequiredFields = false;
 
   ListServiceResponse._() : super();
-  factory ListServiceResponse({
-    $core.Iterable<ServiceResponse>? service,
-  }) {
-    final _result = create();
-    if (service != null) {
-      _result.service.addAll(service);
-    }
-    return _result;
-  }
+  factory ListServiceResponse() => create();
   factory ListServiceResponse.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory ListServiceResponse.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
   ListServiceResponse clone() => ListServiceResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  ListServiceResponse copyWith(void Function(ListServiceResponse) updates) =>
-      super.copyWith((message) => updates(message as ListServiceResponse))
-          as ListServiceResponse; // ignore: deprecated_member_use
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static ListServiceResponse create() => ListServiceResponse._();
   ListServiceResponse createEmptyInstance() => create();
@@ -712,49 +495,28 @@ class ListServiceResponse extends $pb.GeneratedMessage {
 }
 
 class ServiceResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'ServiceResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'grpc.reflection.v1alpha'),
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('ServiceResponse',
+      package: const $pb.PackageName('grpc.reflection.v1alpha'),
       createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'name')
+    ..aOS(1, '', protoName: 'name')
     ..hasRequiredFields = false;
 
   ServiceResponse._() : super();
-  factory ServiceResponse({
-    $core.String? name,
-  }) {
-    final _result = create();
-    if (name != null) {
-      _result.name = name;
-    }
-    return _result;
-  }
+  factory ServiceResponse() => create();
   factory ServiceResponse.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory ServiceResponse.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
   ServiceResponse clone() => ServiceResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  ServiceResponse copyWith(void Function(ServiceResponse) updates) =>
-      super.copyWith((message) => updates(message as ServiceResponse))
-          as ServiceResponse; // ignore: deprecated_member_use
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static ServiceResponse create() => ServiceResponse._();
   ServiceResponse createEmptyInstance() => create();
@@ -779,59 +541,29 @@ class ServiceResponse extends $pb.GeneratedMessage {
 }
 
 class ErrorResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'ErrorResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'grpc.reflection.v1alpha'),
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('ErrorResponse',
+      package: const $pb.PackageName('grpc.reflection.v1alpha'),
       createEmptyInstance: create)
-    ..a<$core.int>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'errorCode',
-        $pb.PbFieldType.O3)
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'errorMessage')
+    ..a<$core.int>(1, '', $pb.PbFieldType.O3, protoName: 'error_code')
+    ..aOS(2, '', protoName: 'error_message')
     ..hasRequiredFields = false;
 
   ErrorResponse._() : super();
-  factory ErrorResponse({
-    $core.int? errorCode,
-    $core.String? errorMessage,
-  }) {
-    final _result = create();
-    if (errorCode != null) {
-      _result.errorCode = errorCode;
-    }
-    if (errorMessage != null) {
-      _result.errorMessage = errorMessage;
-    }
-    return _result;
-  }
+  factory ErrorResponse() => create();
   factory ErrorResponse.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory ErrorResponse.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
   ErrorResponse clone() => ErrorResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  ErrorResponse copyWith(void Function(ErrorResponse) updates) =>
-      super.copyWith((message) => updates(message as ErrorResponse))
-          as ErrorResponse; // ignore: deprecated_member_use
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static ErrorResponse create() => ErrorResponse._();
   ErrorResponse createEmptyInstance() => create();
@@ -865,4 +597,33 @@ class ErrorResponse extends $pb.GeneratedMessage {
   $core.bool hasErrorMessage() => $_has(1);
   @$pb.TagNumber(2)
   void clearErrorMessage() => clearField(2);
+}
+
+// -------- Clients --------
+
+class ServerReflectionClient extends $grpc.Client {
+  final $grpc
+          .ClientMethod<$7.ServerReflectionRequest, $7.ServerReflectionResponse>
+      _$serverReflectionInfo;
+
+  final $core.String version;
+
+  ServerReflectionClient($grpc.ClientChannel channel, this.version,
+      {$grpc.CallOptions? options,
+      $core.Iterable<$grpc.ClientInterceptor>? interceptors})
+      : _$serverReflectionInfo = $grpc.ClientMethod<$7.ServerReflectionRequest,
+            $7.ServerReflectionResponse>(
+          '/grpc.reflection.$version.ServerReflection/ServerReflectionInfo',
+          ($7.ServerReflectionRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $7.ServerReflectionResponse.fromBuffer(value),
+        ),
+        super(channel, options: options, interceptors: interceptors);
+
+  $grpc.ResponseStream<$7.ServerReflectionResponse> serverReflectionInfo(
+      $async.Stream<$7.ServerReflectionRequest> request,
+      {$grpc.CallOptions? options}) {
+    return $createStreamingCall(_$serverReflectionInfo, request,
+        options: options);
+  }
 }
