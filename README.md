@@ -46,8 +46,9 @@ dart run grpcgen -h https://example.com
 ## Usage
 
 -h, --host=<https://example.com> (mandatory)    Url to the web server with gRPC Reflection.
--o, --output=<lib/grpc/generated>               Output directory to put the generated files.
-                                                (defaults to "lib/grpc/generated/")
--s, --schema=\<v1\>                               The schema to use, either v1alpha or v1.
-                                                (defaults to "v1alpha")
+
+-o, --output=<lib/grpc/generated>               Output directory to put the generated files (defaults to "lib/grpc/generated/").
+
+-s, --schema=<v1>                               The schema to use, either v1alpha or v1 (defaults to "v1alpha").
+
 -r, --[no-]reflection                           If set, reflection code is also generated.
