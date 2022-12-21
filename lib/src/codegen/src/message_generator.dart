@@ -528,7 +528,7 @@ class MessageGenerator extends ProtobufContainer {
                   start: 'set '.length)
             ]);
       } else {
-        final setterStatement = 'setField(${field.index}, v)';
+        final setterStatement = 'setField(${field.number}, v)';
         final setterBody = nullable
             ? 'if(v == null) {clearField(${field.number}); return;}'
                 ''
