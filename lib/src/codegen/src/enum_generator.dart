@@ -45,8 +45,9 @@ class EnumGenerator extends ProtobufContainer {
         _aliases.add(EnumAlias(value, canonicalValue));
         _originalAliasIndices.add(i);
       }
-      dartNames[value.name] = disambiguateName(
-          avoidInitialUnderscore(value.name), usedNames, enumSuffixes());
+      dartNames[value.name] = ReCase(disambiguateName(
+              avoidInitialUnderscore(value.name), usedNames, enumSuffixes()))
+          .camelCase;
     }
   }
   @override
@@ -116,7 +117,7 @@ class EnumGenerator extends ProtobufContainer {
         var val = _canonicalValues[i];
         final name = dartNames[val.name]!;
 
-        final valName = quoted(val.name);
+        final valName = quoted(ReCase(val.name).camelCase);
         out.printlnAnnotated(
             'static const $classname $name = '
             '$classname._(${val.number}, $valName);',
