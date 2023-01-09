@@ -469,26 +469,21 @@ class MessageGenerator extends ProtobufContainer {
     var fieldTypeString = field.getDartType();
     final nullable = field.baseType.nullable;
 
-    var defaultExpr = field.getDefaultExpr();
-    var names = field.memberNames;
+    final generator = field.baseType.generator;
+
+    if (generator != null && generator.package == 'google.protobuf') {
+      if (generator.classname == 'Timestamp') {
+        fieldTypeString = '$coreImportPrefix.DateTime';
+      }
+    }
+
+    final names = field.memberNames!;
 
     _emitDeprecatedIf(field.isDeprecated, out);
     _emitOverrideIf(field.overridesGetter, out);
     _emitIndexAnnotation(field.number, out);
-    final getterExpr = _getterExpression(fieldTypeString, field.index!,
-        defaultExpr, field.isRepeated, field.isMapField);
 
-    final nullableGetterExpr = '\$_has(${field.index!}) ? $getterExpr : null';
-
-    final getterBody = nullable ? nullableGetterExpr : getterExpr;
-
-    out.printlnAnnotated(
-        '$fieldTypeString get ${names!.fieldName} => $getterBody;', [
-      NamedLocation(
-          name: names.fieldName,
-          fieldPathSegment: memberFieldPath,
-          start: '$fieldTypeString get '.length)
-    ]);
+    _writeGetter(field, out, memberFieldPath);
 
     if (field.isRepeated) {
       if (field.overridesSetter) {
@@ -528,7 +523,14 @@ class MessageGenerator extends ProtobufContainer {
                   start: 'set '.length)
             ]);
       } else {
-        final setterStatement = 'setField(${field.number}, v)';
+        final normalSetterStatement = 'setField(${field.number}, v)';
+        final orgFieldType = field.getDartType();
+        final dateTimeSetterStatement =
+            'setField(${field.number}, $orgFieldType.fromDateTime(v))';
+        final setterStatement = fieldTypeString == '$coreImportPrefix.DateTime'
+            ? dateTimeSetterStatement
+            : normalSetterStatement;
+
         final setterBody = nullable
             ? 'if(v == null) {clearField(${field.number}); return;}'
                 ''
@@ -576,49 +578,158 @@ class MessageGenerator extends ProtobufContainer {
       if (field.baseType.isMessage) {
         _emitDeprecatedIf(field.isDeprecated, out);
         _emitIndexAnnotation(field.number, out);
-        out.printlnAnnotated(
-            '$fieldTypeString ${names.ensureMethodName}() => '
-            '\$_ensure(${field.index});',
-            <NamedLocation>[
-              NamedLocation(
-                  name: names.ensureMethodName!,
-                  fieldPathSegment: memberFieldPath,
-                  start: '$fieldTypeString '.length)
-            ]);
+        _writeEnsure(field, out, memberFieldPath);
       }
     }
   }
 
-  String _getterExpression(String fieldType, int index, String defaultExpr,
-      bool isRepeated, bool isMapField) {
+  String _getterNullable(String expression, int index, bool nullable) {
+    if (nullable) {
+      return '\$_has($index) ? $expression : null';
+    }
+
+    return expression;
+  }
+
+  void _writeGetter(
+    ProtobufField field,
+    IndentingWriter out,
+    List<int> memberFieldPath,
+  ) {
+    final generator = field.baseType.generator;
+    final isRepeated = field.isRepeated;
+    final isMapField = field.isMapField;
+    final index = field.index!;
+    final names = field.memberNames!;
+
+    var fieldType = field.getDartType();
+    final nullable = field.baseType.nullable;
+
+    void write(String getter) {
+      out.printlnAnnotated(getter, [
+        NamedLocation(
+            name: names.fieldName,
+            fieldPathSegment: memberFieldPath,
+            start: '$fieldType get '.length)
+      ]);
+    }
+
+    if (generator != null && generator.package == 'google.protobuf') {
+      if (generator.classname == 'Timestamp') {
+        fieldType = '$coreImportPrefix.DateTime';
+      }
+    }
+
+    var defaultExpr = field.getDefaultExpr();
+
     if (isMapField) {
-      return '\$_getMap($index)';
-    }
-    if (fieldType == '$coreImportPrefix.String') {
+      final expression = _getterNullable('\$_getMap($index)', index, nullable);
+      final getter = '$fieldType get ${names.fieldName} => $expression;';
+      write(getter);
+    } else if (fieldType == '$coreImportPrefix.String') {
       if (defaultExpr == '""' || defaultExpr == "''") {
-        return '\$_getSZ($index)';
+        final expression = _getterNullable('\$_getSZ($index)', index, nullable);
+        final getter = '$fieldType get ${names.fieldName} => $expression;';
+        write(getter);
+      } else {
+        final expression = _getterNullable('\$_getS($index)', index, nullable);
+        final getter = '$fieldType get ${names.fieldName} => $expression;';
+        write(getter);
       }
-      return '\$_getS($index, $defaultExpr)';
-    }
-    if (fieldType == '$coreImportPrefix.bool') {
+    } else if (fieldType == '$coreImportPrefix.bool') {
       if (defaultExpr == 'false') {
-        return '\$_getBF($index)';
+        final expression = _getterNullable('\$_getBF($index)', index, nullable);
+        final getter = '$fieldType get ${names.fieldName} => $expression;';
+        write(getter);
+      } else {
+        final expression =
+            _getterNullable('\$_getB($index, $defaultExpr)', index, nullable);
+        final getter = '$fieldType get ${names.fieldName} => $expression;';
+        write(getter);
       }
-      return '\$_getB($index, $defaultExpr)';
-    }
-    if (fieldType == '$coreImportPrefix.int') {
+    } else if (fieldType == '$coreImportPrefix.int') {
       if (defaultExpr == '0') {
-        return '\$_getIZ($index)';
+        final expression = _getterNullable('\$_getIZ($index)', index, nullable);
+        final getter = '$fieldType get ${names.fieldName} => $expression;';
+        write(getter);
+      } else {
+        final expression =
+            _getterNullable('\$_getI($index, $defaultExpr)', index, nullable);
+        final getter = '$fieldType get ${names.fieldName} => $expression;';
+        write(getter);
       }
-      return '\$_getI($index, $defaultExpr)';
+    } else if (fieldType == '$_fixnumImportPrefix.Int64' &&
+        defaultExpr == 'null') {
+      final expression = _getterNullable('\$_getI64($index)', index, nullable);
+      final getter = '$fieldType get ${names.fieldName} => $expression;';
+      write(getter);
+    } else if (fieldType == '$coreImportPrefix.DateTime') {
+      final orgFieldType = field.getDartType();
+      final getMethod = defaultExpr == 'null' ? '_getN' : '_getN';
+      //final getMethod = defaultExpr == 'null' ? '_getN' : '_get';
+      final expression = _getterNullable(
+          '\$$getMethod<$orgFieldType>($index)', index, nullable);
+      final getter =
+          '$fieldType get ${names.fieldName} => $expression.toDateTime();';
+      write(getter);
+    } else if (defaultExpr == 'null') {
+      final expression = _getterNullable(
+        isRepeated ? '\$_getList($index)' : '\$_getN($index)',
+        index,
+        nullable,
+      );
+
+      final getter = '$fieldType get ${names.fieldName} => $expression;';
+      write(getter);
+    } else {
+      final expression =
+          _getterNullable('\$_get($index, $defaultExpr)', index, nullable);
+
+      final getter = '$fieldType get ${names.fieldName} => $expression;';
+      write(getter);
     }
-    if (fieldType == '$_fixnumImportPrefix.Int64' && defaultExpr == 'null') {
-      return '\$_getI64($index)';
+  }
+
+  void _writeEnsure(
+    ProtobufField field,
+    IndentingWriter out,
+    List<int> memberFieldPath,
+  ) {
+    final generator = field.baseType.generator;
+    final isRepeated = field.isRepeated;
+    final isMapField = field.isMapField;
+    final index = field.index!;
+    final names = field.memberNames!;
+
+    var fieldType = field.getDartType();
+    final nullable = field.baseType.nullable;
+
+    if (generator != null && generator.package == 'google.protobuf') {
+      if (generator.classname == 'Timestamp') {
+        fieldType = '$coreImportPrefix.DateTime';
+      }
     }
-    if (defaultExpr == 'null') {
-      return isRepeated ? '\$_getList($index)' : '\$_getN($index)';
+
+    void write(String getter) {
+      out.printlnAnnotated(getter, [
+        NamedLocation(
+          name: names.ensureMethodName!,
+          fieldPathSegment: memberFieldPath,
+          start: '$fieldType '.length,
+        )
+      ]);
     }
-    return '\$_get($index, $defaultExpr)';
+
+    if (fieldType == '$coreImportPrefix.DateTime') {
+      final orgFieldType = field.getDartType();
+      write(
+        '$fieldType ${names.ensureMethodName}() => \$_ensure<$orgFieldType>(${field.index}).toDateTime();',
+      );
+    } else {
+      write(
+        '$fieldType ${names.ensureMethodName}() => \$_ensure(${field.index});',
+      );
+    }
   }
 
   void _emitDeprecatedIf(bool condition, IndentingWriter out) {
