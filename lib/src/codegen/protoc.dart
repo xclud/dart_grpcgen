@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:grpcgen/src/grpc/generated/dart_options.dart';
+import 'package:grpcgen/src/grpc/generated/descriptor.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:recase/recase.dart';
 
@@ -8,8 +10,6 @@ import 'indenting_writer.dart';
 import 'mixins.dart';
 import 'names.dart';
 import 'src/code_generator.dart';
-import 'package:grpcgen/src/generated/dart_options.pb.dart';
-import 'package:grpcgen/src/generated/descriptor.pb.dart';
 import 'src/linker.dart';
 import 'src/options.dart';
 import 'src/output_config.dart';

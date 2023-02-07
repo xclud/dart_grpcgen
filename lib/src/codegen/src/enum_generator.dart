@@ -111,6 +111,11 @@ class EnumGenerator extends ProtobufContainer {
           fieldPathSegment: fieldPath!,
           start: 'class '.length)
     ], () {
+      out.println(
+          'const $classname._($coreImportPrefix.int v, $coreImportPrefix.String n) '
+          ': super(v, n);');
+
+      out.println();
       // -----------------------------------------------------------------
       // Define enum types.
       for (var i = 0; i < _canonicalValues.length; i++) {
@@ -162,11 +167,6 @@ class EnumGenerator extends ProtobufContainer {
           ' $protobufImportPrefix.ProtobufEnum.initByValue(values);');
       out.println('static $classname? valueOf($coreImportPrefix.int value) =>'
           ' _byValue[value];');
-      out.println();
-
-      out.println(
-          'const $classname._($coreImportPrefix.int v, $coreImportPrefix.String n) '
-          ': super(v, n);');
     });
   }
 

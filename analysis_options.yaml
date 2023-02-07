@@ -1,16 +1,13 @@
 include: package:lints/recommended.yaml
 analyzer:
   exclude:
-    - 'lib/**/generated/**'
+  #    - "lib/**/generated/**"
   language:
     strict-raw-types: false
-  strong-mode:
-    implicit-casts: true
-    implicit-dynamic: false
   errors:
     always_declare_return_types: error
     always_specify_types: error
-#    always_use_package_imports: error
+    #    always_use_package_imports: error
     annotate_overrides: error
     argument_type_not_assignable: error
     avoid_function_literals_in_foreach_calls: error

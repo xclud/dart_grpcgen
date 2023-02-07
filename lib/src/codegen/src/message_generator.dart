@@ -305,12 +305,38 @@ class MessageGenerator extends ProtobufContainer {
         ? ', toProto3Json: $mixinImportPrefix.${mixin!.name}.toProto3JsonHelper, '
             'fromProto3Json: $mixinImportPrefix.${mixin!.name}.fromProto3JsonHelper'
         : '';
+
+    out.println('/// ${ReCase(classname).titleCase}');
     out.addAnnotatedBlock(
         'class $classname extends $protobufImportPrefix.GeneratedMessage$mixinClause {',
         '}', [
       NamedLocation(
           name: classname, fieldPathSegment: fieldPath, start: 'class '.length)
     ], () {
+      // Constructors.
+      out.println('// Constructors');
+
+      out.println('/// Factory Constructor.');
+      out.println('factory $classname() => create();');
+
+      out.println('/// Private Constructor.');
+      out.printlnAnnotated('$classname._() : super();', [
+        NamedLocation(name: classname, fieldPathSegment: fieldPath, start: 0)
+      ]);
+
+      out.println('/// From Buffer Constructor.');
+      out.println(
+          'factory $classname.fromBuffer($coreImportPrefix.List<$coreImportPrefix.int> i,'
+          ' [$protobufImportPrefix.ExtensionRegistry r = $protobufImportPrefix.ExtensionRegistry.EMPTY])'
+          ' => create()..mergeFromBuffer(i, r);');
+
+      out.println('/// From JSON Constructor.');
+      out.println('factory $classname.fromJson($coreImportPrefix.String i,'
+          ' [$protobufImportPrefix.ExtensionRegistry r = $protobufImportPrefix.ExtensionRegistry.EMPTY])'
+          ' => create()..mergeFromJson(i, r);');
+
+      out.println();
+
       for (var oneof in _oneofNames) {
         out.addBlock(
             'static const $coreImportPrefix.Map<$coreImportPrefix.int, ${oneof.oneofEnumName}> ${oneof.byTagMapName} = {',
@@ -324,6 +350,8 @@ class MessageGenerator extends ProtobufContainer {
           out.println('0 : ${oneof.oneofEnumName}.notSet');
         });
       }
+
+      out.println();
 
       out.addBlock(
           'static final $protobufImportPrefix.BuilderInfo _i = '
@@ -356,19 +384,6 @@ class MessageGenerator extends ProtobufContainer {
 
       out.println();
 
-      out.printlnAnnotated('$classname._() : super();', [
-        NamedLocation(name: classname, fieldPathSegment: fieldPath, start: 0)
-      ]);
-      out.println('factory $classname() => create();');
-      out.println(
-          'factory $classname.fromBuffer($coreImportPrefix.List<$coreImportPrefix.int> i,'
-          ' [$protobufImportPrefix.ExtensionRegistry r = $protobufImportPrefix.ExtensionRegistry.EMPTY])'
-          ' => create()..mergeFromBuffer(i, r);');
-      out.println('factory $classname.fromJson($coreImportPrefix.String i,'
-          ' [$protobufImportPrefix.ExtensionRegistry r = $protobufImportPrefix.ExtensionRegistry.EMPTY])'
-          ' => create()..mergeFromJson(i, r);');
-
-      out.println('');
       out.println('''@$coreImportPrefix.Deprecated(
 'Using this can add significant overhead to your binary. '
 'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -466,24 +481,46 @@ class MessageGenerator extends ProtobufContainer {
 
   void generateFieldAccessorsMutators(
       ProtobufField field, IndentingWriter out, List<int> memberFieldPath) {
-    var fieldTypeString = field.getDartType();
-    final nullable = field.baseType.nullable;
-
-    final generator = field.baseType.generator;
-
-    if (generator != null && generator.package == 'google.protobuf') {
-      if (generator.classname == 'Timestamp') {
-        fieldTypeString = '$coreImportPrefix.DateTime';
-      }
-    }
-
-    final names = field.memberNames!;
-
     _emitDeprecatedIf(field.isDeprecated, out);
     _emitOverrideIf(field.overridesGetter, out);
     _emitIndexAnnotation(field.number, out);
 
+    final recased = ReCase(field.memberNames!.fieldName).titleCase;
+
+    out.println('/// $recased');
     _writeGetter(field, out, memberFieldPath);
+
+    out.println();
+
+    out.println('/// $recased');
+    _writeSetter(field, out, memberFieldPath);
+  }
+
+  String _getterNullable(String expression, int index, bool nullable) {
+    if (nullable) {
+      return '\$_has($index) ? $expression : null';
+    }
+
+    return expression;
+  }
+
+  void _writeSetter(
+    ProtobufField field,
+    IndentingWriter out,
+    List<int> memberFieldPath,
+  ) {
+    final generator = field.baseType.generator;
+    final nullable = field.baseType.nullable;
+    final nullSign = nullable ? '?' : '';
+    final names = field.memberNames!;
+
+    var fieldType = field.getDartType();
+
+    if (generator != null && generator.package == 'google.protobuf') {
+      if (generator.classname == 'Timestamp') {
+        fieldType = '$coreImportPrefix.DateTime$nullSign';
+      }
+    }
 
     if (field.isRepeated) {
       if (field.overridesSetter) {
@@ -513,7 +550,7 @@ class MessageGenerator extends ProtobufContainer {
       if (fastSetter != null) {
         out.printlnAnnotated(
             'set ${names.fieldName}'
-            '($fieldTypeString v) { '
+            '($fieldType v) { '
             '$setterBody;'
             ' }',
             [
@@ -525,9 +562,11 @@ class MessageGenerator extends ProtobufContainer {
       } else {
         final normalSetterStatement = 'setField(${field.number}, v)';
         final orgFieldType = field.getDartType();
+        final nonNullFieldType = orgFieldType.replaceAll('?', '');
         final dateTimeSetterStatement =
-            'setField(${field.number}, $orgFieldType.fromDateTime(v))';
-        final setterStatement = fieldTypeString == '$coreImportPrefix.DateTime'
+            'setField(${field.number}, $nonNullFieldType.fromDateTime(v))';
+        final setterStatement = fieldType == '$coreImportPrefix.DateTime' ||
+                fieldType == '$coreImportPrefix.DateTime?'
             ? dateTimeSetterStatement
             : normalSetterStatement;
 
@@ -539,7 +578,7 @@ class MessageGenerator extends ProtobufContainer {
 
         out.printlnAnnotated(
             'set ${names.fieldName}'
-            '($fieldTypeString v) { '
+            '($fieldType v) { '
             '$setterBody;'
             ' }',
             [
@@ -553,6 +592,8 @@ class MessageGenerator extends ProtobufContainer {
         _emitDeprecatedIf(field.isDeprecated, out);
         _emitOverrideIf(field.overridesHasMethod, out);
         _emitIndexAnnotation(field.number, out);
+
+        out.println('/// ${ReCase(names.hasMethodName!).titleCase}');
         out.printlnAnnotated(
             '$coreImportPrefix.bool ${names.hasMethodName}() =>'
             ' \$_has(${field.index});',
@@ -566,6 +607,7 @@ class MessageGenerator extends ProtobufContainer {
       _emitDeprecatedIf(field.isDeprecated, out);
       _emitOverrideIf(field.overridesClearMethod, out);
       _emitIndexAnnotation(field.number, out);
+      out.println('/// ${ReCase(names.clearMethodName!).titleCase}');
       out.printlnAnnotated(
           'void ${names.clearMethodName}() =>'
           ' clearField(${field.number});',
@@ -583,14 +625,6 @@ class MessageGenerator extends ProtobufContainer {
     }
   }
 
-  String _getterNullable(String expression, int index, bool nullable) {
-    if (nullable) {
-      return '\$_has($index) ? $expression : null';
-    }
-
-    return expression;
-  }
-
   void _writeGetter(
     ProtobufField field,
     IndentingWriter out,
@@ -604,6 +638,7 @@ class MessageGenerator extends ProtobufContainer {
 
     var fieldType = field.getDartType();
     final nullable = field.baseType.nullable;
+    final nullSign = nullable ? '?' : '';
 
     void write(String getter) {
       out.printlnAnnotated(getter, [
@@ -616,7 +651,7 @@ class MessageGenerator extends ProtobufContainer {
 
     if (generator != null && generator.package == 'google.protobuf') {
       if (generator.classname == 'Timestamp') {
-        fieldType = '$coreImportPrefix.DateTime';
+        fieldType = '$coreImportPrefix.DateTime$nullSign';
       }
     }
 
@@ -663,14 +698,19 @@ class MessageGenerator extends ProtobufContainer {
       final expression = _getterNullable('\$_getI64($index)', index, nullable);
       final getter = '$fieldType get ${names.fieldName} => $expression;';
       write(getter);
-    } else if (fieldType == '$coreImportPrefix.DateTime') {
+    } else if (fieldType == '$coreImportPrefix.DateTime' ||
+        fieldType == '$coreImportPrefix.DateTime?') {
       final orgFieldType = field.getDartType();
+      final nonNullFieldType = orgFieldType.replaceAll('?', '');
+
       final getMethod = defaultExpr == 'null' ? '_getN' : '_getN';
+      final type = '\$$getMethod<$nonNullFieldType>($index).toDateTime()';
       //final getMethod = defaultExpr == 'null' ? '_getN' : '_get';
-      final expression = _getterNullable(
-          '\$$getMethod<$orgFieldType>($index)', index, nullable);
-      final getter =
-          '$fieldType get ${names.fieldName} => $expression.toDateTime();';
+      final expression = _getterNullable(type, index, nullable);
+
+      print(type);
+
+      final getter = '$fieldType get ${names.fieldName} => $expression;';
       write(getter);
     } else if (defaultExpr == 'null') {
       final expression = _getterNullable(
@@ -696,13 +736,9 @@ class MessageGenerator extends ProtobufContainer {
     List<int> memberFieldPath,
   ) {
     final generator = field.baseType.generator;
-    final isRepeated = field.isRepeated;
-    final isMapField = field.isMapField;
-    final index = field.index!;
     final names = field.memberNames!;
 
     var fieldType = field.getDartType();
-    final nullable = field.baseType.nullable;
 
     if (generator != null && generator.package == 'google.protobuf') {
       if (generator.classname == 'Timestamp') {
@@ -720,10 +756,12 @@ class MessageGenerator extends ProtobufContainer {
       ]);
     }
 
-    if (fieldType == '$coreImportPrefix.DateTime') {
+    if (fieldType == '$coreImportPrefix.DateTime' ||
+        fieldType == '$coreImportPrefix.DateTime?') {
       final orgFieldType = field.getDartType();
+      final nonNullFieldType = orgFieldType.replaceAll('?', '');
       write(
-        '$fieldType ${names.ensureMethodName}() => \$_ensure<$orgFieldType>(${field.index}).toDateTime();',
+        '$fieldType ${names.ensureMethodName}() => \$_ensure<$nonNullFieldType>(${field.index}).toDateTime();',
       );
     } else {
       write(

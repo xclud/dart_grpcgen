@@ -26,6 +26,15 @@ enum ServerReflectionRequest_MessageRequest {
 }
 
 class ServerReflectionRequest extends $pb.GeneratedMessage {
+  factory ServerReflectionRequest() => create();
+  factory ServerReflectionRequest.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  factory ServerReflectionRequest.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+
+  ServerReflectionRequest._() : super();
   static const $core.Map<$core.int, ServerReflectionRequest_MessageRequest>
       _ServerReflectionRequest_MessageRequestByTag = {
     3: ServerReflectionRequest_MessageRequest.fileByFilename,
@@ -48,15 +57,6 @@ class ServerReflectionRequest extends $pb.GeneratedMessage {
     ..aOS(6, '', protoName: 'all_extension_numbers_of_type')
     ..aOS(7, '', protoName: 'list_services')
     ..hasRequiredFields = false;
-
-  ServerReflectionRequest._() : super();
-  factory ServerReflectionRequest() => create();
-  factory ServerReflectionRequest.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory ServerReflectionRequest.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
 
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -156,21 +156,21 @@ class ServerReflectionRequest extends $pb.GeneratedMessage {
 }
 
 class ExtensionRequest extends $pb.GeneratedMessage {
+  factory ExtensionRequest() => create();
+  factory ExtensionRequest.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  factory ExtensionRequest.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+
+  ExtensionRequest._() : super();
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('ExtensionRequest',
       package: const $pb.PackageName('grpc.reflection.v1alpha'),
       createEmptyInstance: create)
     ..aOS(1, '', protoName: 'containing_type')
     ..a<$core.int>(2, '', $pb.PbFieldType.O3, protoName: 'extension_number')
     ..hasRequiredFields = false;
-
-  ExtensionRequest._() : super();
-  factory ExtensionRequest() => create();
-  factory ExtensionRequest.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory ExtensionRequest.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
 
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -223,6 +223,15 @@ enum ServerReflectionResponse_MessageResponse {
 }
 
 class ServerReflectionResponse extends $pb.GeneratedMessage {
+  factory ServerReflectionResponse() => create();
+  factory ServerReflectionResponse.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  factory ServerReflectionResponse.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+
+  ServerReflectionResponse._() : super();
   static const $core.Map<$core.int, ServerReflectionResponse_MessageResponse>
       _ServerReflectionResponse_MessageResponseByTag = {
     4: ServerReflectionResponse_MessageResponse.fileDescriptorResponse,
@@ -251,15 +260,6 @@ class ServerReflectionResponse extends $pb.GeneratedMessage {
     ..aOM<ErrorResponse>(7, '',
         protoName: 'error_response', subBuilder: ErrorResponse.create)
     ..hasRequiredFields = false;
-
-  ServerReflectionResponse._() : super();
-  factory ServerReflectionResponse() => create();
-  factory ServerReflectionResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory ServerReflectionResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
 
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -367,21 +367,21 @@ class ServerReflectionResponse extends $pb.GeneratedMessage {
 }
 
 class FileDescriptorResponse extends $pb.GeneratedMessage {
+  factory FileDescriptorResponse() => create();
+  factory FileDescriptorResponse.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  factory FileDescriptorResponse.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+
+  FileDescriptorResponse._() : super();
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('FileDescriptorResponse',
       package: const $pb.PackageName('grpc.reflection.v1alpha'),
       createEmptyInstance: create)
     ..p<$core.List<$core.int>>(1, '', $pb.PbFieldType.PY,
         protoName: 'file_descriptor_proto')
     ..hasRequiredFields = false;
-
-  FileDescriptorResponse._() : super();
-  factory FileDescriptorResponse() => create();
-  factory FileDescriptorResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory FileDescriptorResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
 
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -406,21 +406,21 @@ class FileDescriptorResponse extends $pb.GeneratedMessage {
 }
 
 class ExtensionNumberResponse extends $pb.GeneratedMessage {
+  factory ExtensionNumberResponse() => create();
+  factory ExtensionNumberResponse.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  factory ExtensionNumberResponse.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+
+  ExtensionNumberResponse._() : super();
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('ExtensionNumberResponse',
       package: const $pb.PackageName('grpc.reflection.v1alpha'),
       createEmptyInstance: create)
     ..aOS(1, '', protoName: 'base_type_name')
     ..p<$core.int>(2, '', $pb.PbFieldType.K3, protoName: 'extension_number')
     ..hasRequiredFields = false;
-
-  ExtensionNumberResponse._() : super();
-  factory ExtensionNumberResponse() => create();
-  factory ExtensionNumberResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory ExtensionNumberResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
 
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -457,21 +457,21 @@ class ExtensionNumberResponse extends $pb.GeneratedMessage {
 }
 
 class ListServiceResponse extends $pb.GeneratedMessage {
+  factory ListServiceResponse() => create();
+  factory ListServiceResponse.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  factory ListServiceResponse.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+
+  ListServiceResponse._() : super();
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('ListServiceResponse',
       package: const $pb.PackageName('grpc.reflection.v1alpha'),
       createEmptyInstance: create)
     ..pc<ServiceResponse>(1, '', $pb.PbFieldType.PM,
         protoName: 'service', subBuilder: ServiceResponse.create)
     ..hasRequiredFields = false;
-
-  ListServiceResponse._() : super();
-  factory ListServiceResponse() => create();
-  factory ListServiceResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory ListServiceResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
 
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -495,20 +495,20 @@ class ListServiceResponse extends $pb.GeneratedMessage {
 }
 
 class ServiceResponse extends $pb.GeneratedMessage {
+  factory ServiceResponse() => create();
+  factory ServiceResponse.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  factory ServiceResponse.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+
+  ServiceResponse._() : super();
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('ServiceResponse',
       package: const $pb.PackageName('grpc.reflection.v1alpha'),
       createEmptyInstance: create)
     ..aOS(1, '', protoName: 'name')
     ..hasRequiredFields = false;
-
-  ServiceResponse._() : super();
-  factory ServiceResponse() => create();
-  factory ServiceResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory ServiceResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
 
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -541,21 +541,21 @@ class ServiceResponse extends $pb.GeneratedMessage {
 }
 
 class ErrorResponse extends $pb.GeneratedMessage {
+  factory ErrorResponse() => create();
+  factory ErrorResponse.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  factory ErrorResponse.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+
+  ErrorResponse._() : super();
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('ErrorResponse',
       package: const $pb.PackageName('grpc.reflection.v1alpha'),
       createEmptyInstance: create)
     ..a<$core.int>(1, '', $pb.PbFieldType.O3, protoName: 'error_code')
     ..aOS(2, '', protoName: 'error_message')
     ..hasRequiredFields = false;
-
-  ErrorResponse._() : super();
-  factory ErrorResponse() => create();
-  factory ErrorResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory ErrorResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
 
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -602,12 +602,6 @@ class ErrorResponse extends $pb.GeneratedMessage {
 // -------- Clients --------
 
 class ServerReflectionClient extends $grpc.Client {
-  final $grpc
-          .ClientMethod<$7.ServerReflectionRequest, $7.ServerReflectionResponse>
-      _$serverReflectionInfo;
-
-  final $core.String version;
-
   ServerReflectionClient($grpc.ClientChannel channel, this.version,
       {$grpc.CallOptions? options,
       $core.Iterable<$grpc.ClientInterceptor>? interceptors})
@@ -619,6 +613,11 @@ class ServerReflectionClient extends $grpc.Client {
               $7.ServerReflectionResponse.fromBuffer(value),
         ),
         super(channel, options: options, interceptors: interceptors);
+  final $grpc
+          .ClientMethod<$7.ServerReflectionRequest, $7.ServerReflectionResponse>
+      _$serverReflectionInfo;
+
+  final $core.String version;
 
   $grpc.ResponseStream<$7.ServerReflectionResponse> serverReflectionInfo(
       $async.Stream<$7.ServerReflectionRequest> request,

@@ -657,6 +657,7 @@ class FileGenerator extends ProtobufContainer {
 
 const _fileIgnores = {
   'annotate_overrides',
+  'implementation_imports',
   'camel_case_types',
   'constant_identifier_names',
   'library_prefixes',

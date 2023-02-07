@@ -2,8 +2,8 @@ import 'package:protobuf/protobuf.dart';
 
 import '../names.dart' show lowerCaseFirstLetter;
 import '../protoc.dart' show FileGenerator;
-import 'package:grpcgen/src/generated/dart_options.pb.dart';
-import 'package:grpcgen/src/generated/descriptor.pb.dart';
+import 'package:grpcgen/src/grpc/generated/dart_options.dart';
+import 'package:grpcgen/src/grpc/generated/descriptor.dart';
 import 'linker.dart';
 import 'options.dart';
 import 'output_config.dart';

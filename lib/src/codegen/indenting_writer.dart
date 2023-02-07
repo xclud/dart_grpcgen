@@ -4,7 +4,7 @@
 
 import 'dart:collection';
 
-import 'package:grpcgen/src/generated/descriptor.pb.dart';
+import 'package:grpcgen/src/grpc/generated/descriptor.dart';
 
 /// Specifies code locations where metadata annotations should be attached and
 /// where they should point to in the original proto.

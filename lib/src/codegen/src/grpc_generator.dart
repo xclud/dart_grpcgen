@@ -108,16 +108,26 @@ class GrpcServiceGenerator {
     // out.println(
     //     '@$protobufImportPrefix.GrpcServiceName(\'$_fullServiceName\')');
     out.addBlock('class $_clientClassname extends $_client {', '}', () {
-      for (final method in _methods) {
-        method.generateClientMethodDescriptor(out);
-      }
-      out.println();
+      out.println('/// Default Constructor.');
       out.println('$_clientClassname($_clientChannel channel,');
       out.println('    {$_callOptions? options,');
       out.println(
-          '    $coreImportPrefix.Iterable<$_interceptor>? interceptors})');
+          '    $coreImportPrefix.Iterable<$_interceptor>? interceptors,})');
       out.println('    : super(channel, options: options,');
-      out.println('      interceptors: interceptors);');
+      out.println('      interceptors: interceptors,);');
+
+      out.println();
+
+      /// Method Descriptors.
+      out.println('/// Method Descriptors.');
+      for (final method in _methods) {
+        method.generateClientMethodDescriptor(out);
+      }
+
+      out.println();
+
+      /// Method Stubs.
+      out.println('/// Method Stubs.');
       for (final method in _methods) {
         method.generateClientStub(out);
       }

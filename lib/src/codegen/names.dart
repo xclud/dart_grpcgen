@@ -6,8 +6,8 @@ import 'dart:math' as math;
 
 import 'package:protobuf/meta.dart';
 
-import 'package:grpcgen/src/generated/dart_options.pb.dart';
-import 'package:grpcgen/src/generated/descriptor.pb.dart';
+import 'package:grpcgen/src/grpc/generated/dart_options.dart';
+import 'package:grpcgen/src/grpc/generated/descriptor.dart';
 
 class MemberNames {
   MemberNames(this.fieldNames, this.oneofNames);
@@ -451,7 +451,7 @@ String _fieldMethodSuffix(FieldDescriptorProto field) {
   var name = _nameOption(field)!;
   if (name.isNotEmpty) return _capitalize(name);
 
-  if (field.type != FieldDescriptorProto_Type.TYPE_GROUP) {
+  if (field.type != FieldDescriptorProto_Type.typeGroup) {
     return underscoresToCamelCase(field.name);
   }
 
@@ -471,11 +471,11 @@ String _capitalize(String s) =>
     s.isEmpty ? s : '${s[0].toUpperCase()}${s.substring(1)}';
 
 bool _isRepeated(FieldDescriptorProto field) =>
-    field.label == FieldDescriptorProto_Label.LABEL_REPEATED;
+    field.label == FieldDescriptorProto_Label.labelRepeated;
 
 bool _isGroupOrMessage(FieldDescriptorProto field) =>
-    field.type == FieldDescriptorProto_Type.TYPE_MESSAGE ||
-    field.type == FieldDescriptorProto_Type.TYPE_GROUP;
+    field.type == FieldDescriptorProto_Type.typeMessage ||
+    field.type == FieldDescriptorProto_Type.typeGroup;
 
 String? _nameOption(FieldDescriptorProto field) =>
     field.options.getExtension(Dart_options.dartName) as String?;

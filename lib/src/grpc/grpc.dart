@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:grpcgen/src/generated/descriptor.pb.dart';
+import 'package:grpcgen/src/grpc/generated/descriptor.dart';
 import 'package:grpcgen/src/grpc/generated/reflection_v1.dart' as v1;
 import 'package:grpc/grpc.dart';
 import 'package:grpc/grpc_or_grpcweb.dart';
